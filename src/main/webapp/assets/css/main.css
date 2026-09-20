@@ -1,0 +1,257 @@
+/* ==========================================================================
+   JeevanMart - Premium Classical Design System
+   Global Tokens, Reset, Typography & Base Accessibility
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700;800&family=Manrope:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+    /* ----------------------------------------------------------------
+       Palette: "Phoenix Ember" — black & red flame UI
+       ---------------------------------------------------------------- */
+    --color-primary: #fdf1ec;              /* warm ember-white, used as "ink" on dark surfaces */
+    --color-primary-hover: #ffffff;
+    --color-primary-light: #1c1210;
+
+    --color-accent: #ff2d1f;               /* phoenix flame red */
+    --color-accent-hover: #e0180c;
+    --color-accent-bright: #ff7a33;        /* ember orange flare */
+    --color-accent-lift: #ffcf8a;          /* gold ember highlight */
+    --color-accent-pale: #d9483a;
+    --color-accent-soft: #260d09;
+    --color-accent-border: #5a1c12;
+
+    --color-clay: #ff8a1f;                 /* gold-orange flame, secondary accent */
+    --color-indigo: #ff5f4d;
+    --color-leaf: #ffb347;
+
+    /* Neutrals & Surfaces — charred obsidian with warm red undertone */
+    --bg-canvas: #0a0403;
+    --bg-surface: #170908;
+    --bg-subtle: #1f0e0b;
+    --bg-field: #130706;
+    --border-subtle: #2b1310;
+    --border-medium: #3f1a15;
+    --border-strong: #5c241a;
+    --border-focus: #ff2d1f;
+
+    /* Typography Colors */
+    --text-primary: #fbeae4;
+    --text-secondary: #c9a89e;
+    --text-muted: #8a655c;
+    --text-inverse: #0a0403;
+
+    /* On-dark text tokens (kept for panels that are darker still) */
+    --text-on-dark: #fbeae4;
+    --text-on-dark-muted: #b99087;
+    --text-on-dark-faint: #7a564d;
+
+    /* Semantic Status Tones (tuned for a dark surface) */
+    --success-text: #7be8b6;
+    --success-bg: #10231b;
+    --success-border: #26543c;
+
+    --danger-text: #ff9d85;
+    --danger-bg: #271512;
+    --danger-border: #5a2e26;
+
+    --warning-text: #f2d27a;
+    --warning-bg: #26200f;
+    --warning-border: #5a4a22;
+
+    --info-text: #a7b0ff;
+    --info-bg: #171a2e;
+    --info-border: #363d6b;
+
+    /* Typography Stacks */
+    --font-serif: "Unbounded", "Space Grotesk", sans-serif;   /* used for display/headings */
+    --font-sans: "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-numeric: "Space Grotesk", "Manrope", sans-serif;
+    --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    /* Sharper, jewel-cut radii */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-pill: 9999px;
+
+    /* Deep black shadows + a citrus glow ring available separately */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.5);
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.45), 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.55), 0 6px 14px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.55);
+    --shadow-card-hover: 0 16px 40px rgba(0, 0, 0, 0.6);
+    --glow-accent: 0 0 0 1px rgba(255, 45, 31, 0.4), 0 0 26px rgba(255, 106, 20, 0.35);
+
+    /* Spacing Grid (8pt rhythm) */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.25rem;
+    --space-6: 1.5rem;
+    --space-8: 2rem;
+    --space-10: 2.5rem;
+    --space-12: 3rem;
+    --space-16: 4rem;
+
+    /* Motion */
+    --transition-fast: 0.15s cubic-bezier(0.2, 0.8, 0.3, 1);
+    --transition-base: 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
+
+    /* Raw channels for rgba() tinting */
+    --rgb-primary: 23, 9, 8;
+    --rgb-accent: 255, 45, 31;
+    --rgb-accent-bright: 255, 122, 51;
+}
+
+/* CSS Reset & Semantic Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-canvas);
+    /* Charred obsidian canvas: rising ember glow wells + drifting flame wisps + a fine grid */
+    background-image:
+        radial-gradient(ellipse at 12% 105%, rgba(255, 45, 31, 0.22), transparent 45%),
+        radial-gradient(ellipse at 88% 100%, rgba(255, 138, 31, 0.16), transparent 42%),
+        radial-gradient(circle at 8% -8%, rgba(255, 45, 31, 0.10), transparent 40%),
+        radial-gradient(circle at 100% 6%, rgba(255, 122, 51, 0.09), transparent 38%),
+        linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+    background-size: auto, auto, auto, auto, 42px 42px, 42px 42px;
+    background-attachment: fixed, fixed, fixed, fixed, fixed, fixed;
+    color: var(--text-primary);
+    line-height: 1.65;
+    letter-spacing: -0.006em;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Slow-drifting ember particles across every page, behind all content */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+        radial-gradient(2px 2px at 18% 22%, rgba(255, 138, 31, 0.55), transparent 60%),
+        radial-gradient(1.5px 1.5px at 76% 48%, rgba(255, 45, 31, 0.5), transparent 60%),
+        radial-gradient(2px 2px at 40% 78%, rgba(255, 200, 130, 0.45), transparent 60%),
+        radial-gradient(1.5px 1.5px at 92% 15%, rgba(255, 90, 40, 0.5), transparent 60%),
+        radial-gradient(1.5px 1.5px at 60% 90%, rgba(255, 138, 31, 0.4), transparent 60%);
+    animation: embers-drift 22s ease-in-out infinite alternate;
+    opacity: 0.7;
+}
+
+@keyframes embers-drift {
+    0%   { transform: translateY(0) translateX(0); }
+    100% { transform: translateY(-18px) translateX(6px); }
+}
+
+body > * { position: relative; z-index: 1; }
+
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    text-transform: none;
+}
+
+h1 { font-size: clamp(2.1rem, 1.5rem + 2.4vw, 3.1rem); letter-spacing: -0.03em; }
+h2 { font-size: clamp(1.6rem, 1.3rem + 1.4vw, 2.1rem); }
+h3 { font-size: 1.35rem; }
+h4 { font-size: 1.05rem; }
+h5 { font-size: 0.9rem; font-family: var(--font-sans); font-weight: 700; letter-spacing: 0.01em; }
+
+/* Numerals — prices, counts, stats — geometric mono-ish face */
+.price, .card-product-price, .product-detail-price,
+.stat-item h4, .cart-count, .badge, td .price {
+    font-family: var(--font-numeric);
+    font-feature-settings: "tnum";
+}
+
+p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-3);
+}
+
+a {
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-accent);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: inherit;
+    color: inherit;
+}
+
+/* Accessibility Focus States */
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+    box-shadow: 0 0 0 5px rgba(var(--rgb-accent), 0.18);
+}
+
+::selection {
+    background-color: var(--color-accent);
+    color: #0a0403;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-canvas); }
+::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 6px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-accent); }
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

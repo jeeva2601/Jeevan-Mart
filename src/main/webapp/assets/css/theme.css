@@ -1,0 +1,682 @@
+/* ==========================================================================
+   JeevanMart — "Obsidian & Neon Citrus" Theme Layer
+   Loaded LAST. Dark luxe, glassmorphism, neon-lime accent on graphite.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Top ribbon — graphite with a citrus hairline
+   -------------------------------------------------------------------------- */
+.prestige-bar {
+    background: linear-gradient(100deg, #170908 0%, #1f0e0b 55%, #170908 100%);
+    color: var(--text-on-dark-muted);
+    border-bottom: 1px solid rgba(var(--rgb-accent), 0.28);
+    position: relative;
+}
+
+.prestige-bar::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0; bottom: -1px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--rgb-accent), 0.8), transparent);
+}
+
+.prestige-badge {
+    background-color: rgba(var(--rgb-accent), 0.12);
+    border: 1px solid rgba(var(--rgb-accent), 0.4);
+    color: var(--color-accent);
+    padding: 0.1rem 0.55rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   2. Header — frosted glass over obsidian
+   -------------------------------------------------------------------------- */
+.site-header {
+    background-color: rgba(10, 11, 13, 0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+    border-bottom: 1px solid var(--border-subtle);
+    box-shadow: 0 1px 0 rgba(var(--rgb-accent), 0.15), var(--shadow-sm);
+}
+
+.header-inner { height: 80px; }
+
+/* --------------------------------------------------------------------------
+   3. Brand mark — faceted gem tile with a citrus core glow
+   -------------------------------------------------------------------------- */
+.brand-logo { gap: var(--space-3); align-items: center; }
+
+.brand-symbol {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border: 1px solid rgba(var(--rgb-accent), 0.35);
+    border-radius: 12px;
+    background: linear-gradient(155deg, #20100c 0%, #130706 70%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04), 0 4px 14px rgba(0,0,0,0.5);
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.brand-symbol::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(var(--rgb-accent), 0.55), transparent 60%);
+    opacity: 0.9;
+}
+
+.brand-symbol svg, .brand-symbol > * { position: relative; z-index: 1; }
+
+.brand-logo:hover .brand-symbol {
+    transform: rotate(-4deg) scale(1.06);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), var(--glow-accent);
+}
+
+.brand-name {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--text-primary);
+}
+
+.brand-name span { color: var(--color-accent); }
+
+.brand-wordmark { display: inline-flex; flex-direction: column; justify-content: center; line-height: 1; }
+.brand-mark { display: block; }
+
+.brand-tagline {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-on-dark-faint);
+    margin-top: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   4. Search — glass capsule with a citrus focus ring
+   -------------------------------------------------------------------------- */
+.search-bar-form {
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-pill);
+    background-color: var(--bg-field);
+    overflow: hidden;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+
+.search-bar-form:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(var(--rgb-accent), 0.16);
+}
+
+.search-category-select {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border-right: 1px solid var(--border-subtle);
+    font-weight: 600;
+    padding-left: var(--space-5);
+}
+
+.search-input {
+    padding: 0.7rem var(--space-4);
+    background-color: transparent;
+    color: var(--text-primary);
+}
+
+.search-btn {
+    background: var(--color-accent);
+    color: #0a0403;
+    border: none;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 0 var(--space-6);
+    border-radius: 0;
+}
+
+.search-btn:hover { background: var(--color-accent-bright); }
+
+/* --------------------------------------------------------------------------
+   5. Navigation — citrus underline sweep
+   -------------------------------------------------------------------------- */
+.nav-link {
+    position: relative;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    padding: 0.4rem 0;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: -2px;
+    height: 2px; width: 100%;
+    background: var(--color-accent);
+    box-shadow: 0 0 8px rgba(var(--rgb-accent), 0.7);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--transition-base);
+}
+
+.nav-link:hover::after, .nav-link.active::after { transform: scaleX(1); transform-origin: left; }
+.nav-link:hover, .nav-link.active { color: var(--text-primary); }
+
+.cart-count {
+    background: var(--color-accent);
+    color: #0a0403;
+    border: 2px solid var(--bg-canvas);
+    box-shadow: 0 0 10px rgba(var(--rgb-accent), 0.6);
+    font-weight: 800;
+}
+
+/* --------------------------------------------------------------------------
+   6. Buttons — neon citrus pill + ghost glass outline
+   -------------------------------------------------------------------------- */
+.btn {
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    transition: transform var(--transition-fast), box-shadow var(--transition-base), background-color var(--transition-base);
+}
+
+.btn:hover { transform: translateY(-1.5px); }
+.btn:active { transform: translateY(0.5px); }
+
+.btn-primary {
+    background: var(--color-accent);
+    color: #0a0403;
+    border-color: transparent;
+    box-shadow: 0 0 0 1px rgba(var(--rgb-accent), 0.3), 0 6px 18px rgba(var(--rgb-accent), 0.28);
+}
+
+.btn-primary:hover {
+    background: var(--color-accent-bright);
+    box-shadow: 0 0 0 1px rgba(var(--rgb-accent), 0.5), 0 10px 26px rgba(var(--rgb-accent), 0.4);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--color-clay), #e0552f);
+    color: #fff;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(255, 106, 74, 0.3);
+}
+
+.btn-gold:hover { box-shadow: 0 10px 26px rgba(255, 106, 74, 0.42); }
+
+.btn-outline {
+    border: 1px solid var(--border-medium);
+    color: var(--text-primary);
+    background-color: rgba(255,255,255,0.02);
+    backdrop-filter: blur(6px);
+}
+
+.btn-outline:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background-color: rgba(var(--rgb-accent), 0.08);
+}
+
+.btn-secondary { background-color: var(--bg-subtle); color: var(--text-primary); border-color: var(--border-medium); }
+.btn-danger { background-color: var(--color-clay); color: #fff; border-color: transparent; }
+.btn-text { color: var(--color-accent); }
+.btn-text:hover { color: var(--color-accent-bright); }
+
+/* --------------------------------------------------------------------------
+   7. Forms — inset graphite fields
+   -------------------------------------------------------------------------- */
+.form-control, .form-select {
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-field);
+    color: var(--text-primary);
+    padding: 0.7rem var(--space-4);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control::placeholder { color: var(--text-muted); }
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 4px rgba(var(--rgb-accent), 0.15);
+    background-color: var(--bg-surface);
+}
+
+.form-label {
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.form-label .required { color: var(--color-clay); }
+
+/* --------------------------------------------------------------------------
+   8. Cards — frosted glass panels
+   -------------------------------------------------------------------------- */
+.card, .card-product {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    background-color: rgba(255,255,255,0.02);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-card);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.card:hover, .card-product:hover {
+    transform: translateY(-5px);
+    border-color: rgba(var(--rgb-accent), 0.4);
+    box-shadow: var(--shadow-card-hover), 0 0 24px rgba(var(--rgb-accent), 0.10);
+}
+
+.card-product { position: relative; overflow: hidden; }
+
+.card-product::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--color-accent), transparent 70%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+}
+
+.card-product:hover::before { opacity: 1; }
+
+.card-product-media {
+    background: linear-gradient(160deg, #1f0e0b, #170908);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.card-product-category {
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-clay);
+}
+
+.card-product-title { font-family: var(--font-serif); font-weight: 600; color: var(--text-primary); }
+.card-product-title a { color: var(--text-primary); }
+.card-product-title a:hover { color: var(--color-accent); }
+
+.card-product-price, .product-detail-price {
+    font-family: var(--font-numeric);
+    color: var(--color-accent);
+    letter-spacing: -0.01em;
+}
+
+.btn-wishlist {
+    border-radius: var(--radius-pill);
+    background-color: rgba(0,0,0,0.4);
+    border: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    backdrop-filter: blur(6px);
+}
+
+.btn-wishlist:hover { color: var(--color-clay); border-color: var(--color-clay); }
+
+/* --------------------------------------------------------------------------
+   9. Badges
+   -------------------------------------------------------------------------- */
+.badge {
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.7rem;
+}
+
+.badge-gold {
+    background-color: rgba(var(--rgb-accent), 0.12);
+    color: var(--color-accent);
+    border: 1px solid rgba(var(--rgb-accent), 0.35);
+}
+
+.badge-in-stock {
+    background-color: rgba(91, 230, 168, 0.12);
+    color: var(--color-leaf);
+    border: 1px solid rgba(91, 230, 168, 0.32);
+}
+
+.badge-out-of-stock {
+    background-color: rgba(255, 106, 74, 0.12);
+    color: var(--color-clay);
+    border: 1px solid rgba(255, 106, 74, 0.32);
+}
+
+/* --------------------------------------------------------------------------
+   10. Hero — deep obsidian panel, citrus sunburst, glass media card
+   -------------------------------------------------------------------------- */
+.hero-section {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(ellipse at 85% 15%, rgba(var(--rgb-accent), 0.16), transparent 55%),
+        radial-gradient(ellipse at 10% 100%, rgba(255, 106, 74, 0.10), transparent 50%),
+        linear-gradient(160deg, #130706 0%, #0a0403 70%);
+    color: var(--text-primary);
+    padding: var(--space-16) var(--space-8);
+    border: 1px solid var(--border-subtle);
+    box-shadow: var(--shadow-lg);
+}
+
+.hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+    background-size: 34px 34px;
+    -webkit-mask-image: radial-gradient(ellipse at 70% 20%, black, transparent 68%);
+    mask-image: radial-gradient(ellipse at 70% 20%, black, transparent 68%);
+    pointer-events: none;
+}
+
+.hero-grid { position: relative; z-index: 1; }
+
+.hero-tag {
+    background-color: rgba(var(--rgb-accent), 0.1);
+    border: 1px solid rgba(var(--rgb-accent), 0.4);
+    color: var(--color-accent);
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-size: 0.6875rem;
+    padding: 0.3rem 0.85rem;
+}
+
+.hero-headline {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+}
+
+.hero-headline em {
+    font-style: normal;
+    color: var(--color-accent);
+    text-shadow: 0 0 28px rgba(var(--rgb-accent), 0.45);
+}
+
+.hero-subhead { color: var(--text-secondary); }
+
+.hero-media-card {
+    background-color: rgba(255,255,255,0.03);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+
+.hero-stats { border-top: 1px solid var(--border-subtle); }
+
+.stat-item h4 {
+    font-family: var(--font-numeric);
+    color: var(--color-accent);
+    letter-spacing: -0.02em;
+    text-shadow: 0 0 18px rgba(var(--rgb-accent), 0.35);
+}
+
+.stat-item p {
+    color: var(--text-on-dark-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 0.6875rem;
+    font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   11. Section headers
+   -------------------------------------------------------------------------- */
+.section-title {
+    font-family: var(--font-serif);
+    color: var(--text-primary);
+    position: relative;
+    display: inline-block;
+    padding-bottom: var(--space-3);
+}
+
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 64px; height: 3px;
+    border-radius: 3px;
+    background: var(--color-accent);
+    box-shadow: 0 0 10px rgba(var(--rgb-accent), 0.6);
+}
+
+.section-subtitle { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   12. Category & pillar tiles
+   -------------------------------------------------------------------------- */
+.card-category {
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255,255,255,0.02);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
+}
+
+.card-category:hover {
+    transform: translateY(-6px);
+    border-color: rgba(var(--rgb-accent), 0.4);
+    box-shadow: var(--shadow-card-hover), 0 0 22px rgba(var(--rgb-accent), 0.12);
+}
+
+.category-title, .card-category p { color: var(--text-primary); }
+.card-category p { color: var(--text-muted) !important; }
+
+.category-icon, .pillar-icon {
+    background: rgba(var(--rgb-accent), 0.08);
+    border: 1px solid rgba(var(--rgb-accent), 0.3);
+    border-radius: var(--radius-md);
+    color: var(--color-accent);
+}
+
+.pillar-card {
+    border-left: 2px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    background-color: rgba(255,255,255,0.02);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-xs);
+}
+
+.pillar-card h4 { font-family: var(--font-serif); color: var(--text-primary); }
+.pillar-card p { color: var(--text-muted); }
+
+/* --------------------------------------------------------------------------
+   13. Promo banner
+   -------------------------------------------------------------------------- */
+.promo-banner {
+    border-radius: var(--radius-lg);
+    background:
+        radial-gradient(ellipse at 15% 120%, rgba(255,255,255,0.06), transparent 60%),
+        linear-gradient(120deg, #20100c 0%, #130706 100%);
+    border: 1px solid rgba(var(--rgb-accent), 0.3);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+}
+
+.promo-content h3 { color: var(--color-accent); font-family: var(--font-serif); }
+.promo-content p { color: var(--text-secondary); }
+
+.promo-banner .btn-primary { background: var(--color-accent); color: #0a0403; }
+
+/* --------------------------------------------------------------------------
+   14. Catalog sidebar, toolbar, pagination
+   -------------------------------------------------------------------------- */
+.catalog-sidebar {
+    background-color: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+}
+
+.filter-title {
+    font-family: var(--font-sans);
+    font-weight: 800;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+}
+
+.filter-list a { border-radius: var(--radius-pill); padding: 0.3rem 0.7rem; color: var(--text-secondary); }
+.filter-list a:hover, .filter-list a.active {
+    background-color: rgba(var(--rgb-accent), 0.1);
+    color: var(--color-accent);
+}
+
+.catalog-toolbar {
+    background-color: rgba(255,255,255,0.02);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-pill);
+    padding: var(--space-3) var(--space-5);
+}
+
+.page-link {
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--border-subtle);
+    font-family: var(--font-numeric);
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.page-link:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+.page-link.active {
+    background: var(--color-accent);
+    border-color: transparent;
+    color: #0a0403;
+}
+
+/* --------------------------------------------------------------------------
+   15. Tables
+   -------------------------------------------------------------------------- */
+.table-responsive {
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background-color: rgba(255,255,255,0.015);
+}
+
+.table-premium th {
+    background-color: var(--bg-subtle);
+    color: var(--color-accent);
+    font-size: 0.6875rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border-medium);
+}
+
+.table-premium td { color: var(--text-secondary); border-bottom: 1px solid var(--border-subtle); }
+.table-premium tbody tr:hover { background-color: rgba(var(--rgb-accent), 0.05); }
+
+/* --------------------------------------------------------------------------
+   16. Modals, toasts, spinner
+   -------------------------------------------------------------------------- */
+.modal-backdrop { background-color: rgba(0,0,0,0.7); }
+
+.modal-dialog {
+    border-radius: var(--radius-lg);
+    border-top: 3px solid var(--color-accent);
+    background-color: var(--bg-surface);
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-title { font-family: var(--font-serif); color: var(--text-primary); }
+
+.toast {
+    border-radius: var(--radius-md);
+    border-left: 3px solid var(--color-accent);
+    background-color: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+    font-weight: 600;
+}
+
+.toast.toast-success { border-left-color: var(--color-leaf); }
+.toast.toast-error { border-left-color: var(--color-clay); }
+
+.spinner { border-color: var(--border-subtle); border-top-color: var(--color-accent); }
+
+/* --------------------------------------------------------------------------
+   17. Auth pages
+   -------------------------------------------------------------------------- */
+.auth-card, .auth-wrapper .card {
+    border-radius: var(--radius-lg);
+    border-top: 3px solid var(--color-accent);
+    background-color: rgba(255,255,255,0.02);
+    backdrop-filter: blur(12px);
+}
+
+/* --------------------------------------------------------------------------
+   18. Footer — obsidian with a citrus seam
+   -------------------------------------------------------------------------- */
+.site-footer {
+    background: linear-gradient(175deg, #130706 0%, #0a0403 100%);
+    position: relative;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.site-footer::before {
+    content: "";
+    position: absolute;
+    top: -1px; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(var(--rgb-accent), 0.9), transparent);
+}
+
+.footer-col h4 {
+    color: var(--text-primary);
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    position: relative;
+    padding-bottom: var(--space-2);
+}
+
+.footer-col h4::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 24px; height: 2px;
+    background-color: var(--color-accent);
+    box-shadow: 0 0 8px rgba(var(--rgb-accent), 0.6);
+    border-radius: 2px;
+}
+
+.footer-col ul a { color: var(--text-on-dark-muted); transition: color var(--transition-fast), padding-left var(--transition-fast); }
+.footer-col ul a:hover { color: var(--color-accent); padding-left: 4px; }
+
+.footer-bottom { border-top: 1px solid var(--border-subtle); color: var(--text-on-dark-faint); }
+
+/* --------------------------------------------------------------------------
+   19. Responsive tuning
+   -------------------------------------------------------------------------- */
+@media (max-width: 768px) {
+    .header-inner { height: auto; padding-top: var(--space-3); padding-bottom: var(--space-3); }
+    .hero-section { padding: var(--space-10) var(--space-5); border-radius: var(--radius-md); }
+    .brand-tagline { display: none; }
+    .prestige-container { font-size: 0.75rem; gap: var(--space-2); }
+}
