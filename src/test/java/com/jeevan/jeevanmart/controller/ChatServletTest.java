@@ -53,6 +53,8 @@ class ChatServletTest {
     @DisplayName("POST /api/chat with valid message returns AI assistant response")
     void testChatValidMessage() throws Exception {
         when(request.getSession(false)).thenReturn(session);
+        when(request.getSession(true)).thenReturn(session);
+        when(request.getSession()).thenReturn(session);
         UserResponseDTO user = new UserResponseDTO();
         user.setId(10L);
         when(session.getAttribute("currentUser")).thenReturn(user);
