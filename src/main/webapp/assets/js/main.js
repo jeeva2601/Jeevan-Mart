@@ -22,6 +22,30 @@ const JeevanMart = {
     },
 
     // ----------------------------------------------------------------------
+    // Product Gallery (safe on pages without a gallery)
+    // ----------------------------------------------------------------------
+    initProductGallery: function () {
+        // Product detail pages may provide .product-gallery thumbnails.
+        // Keep this initializer defined so one missing optional gallery cannot
+        // abort the rest of the application's DOM-ready initialization.
+        document.addEventListener("click", function (event) {
+            const thumbnail = event.target.closest("[data-gallery-image]");
+            if (!thumbnail) return;
+            const gallery = thumbnail.closest(".product-gallery");
+            if (!gallery) return;
+            const mainImage = gallery.querySelector("[data-gallery-main]");
+            const imageUrl = thumbnail.getAttribute("data-gallery-image");
+            if (mainImage && imageUrl) {
+                mainImage.setAttribute("src", imageUrl);
+                gallery.querySelectorAll("[data-gallery-image]").forEach(function (item) {
+                    item.classList.toggle("active", item === thumbnail);
+                    item.setAttribute("aria-pressed", item === thumbnail ? "true" : "false");
+                });
+            }
+        });
+    },
+
+    // ----------------------------------------------------------------------
     // CSRF Token Helper
     // ----------------------------------------------------------------------
     getCsrfToken: function () {

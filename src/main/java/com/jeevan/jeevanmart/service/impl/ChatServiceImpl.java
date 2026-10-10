@@ -1,51 +1,75 @@
-package com.jeevan.jeevanmart.service.impl;
+﻿package com.jeevan.jeevanmart.service.impl;
 
-import com.jeevan.jeevanmart.dao.impl.ProductDAOImpl;
-import com.jeevan.jeevanmart.exception.AppException;
-import com.jeevan.jeevanmart.exception.ValidationException;
 import com.jeevan.jeevanmart.service.ChatService;
-import com.jeevan.jeevanmart.service.ProductService;
+import com.jeevan.jeevanmart.service.provider.ChatProvider;
+import com.jeevan.jeevanmart.service.provider.GeminiChatProvider;
+import com.jeevan.jeevanmart.service.provider.MockChatProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
+import java.util.Properties;
+
 /**
- * Server-side implementation of ChatService.
- * Keeps AI provider abstraction clean, secure, and fully server-side without exposing API keys.
+ * Chat service enforcing the marketplace-only scope and providing a degraded fallback.
  */
 public class ChatServiceImpl implements ChatService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ChatServiceImpl.class);
-    private final ProductService productService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatServiceImpl.class);
+    private static final String DOMAIN_CONTEXT =
+            "You are JeevanMart's marketplace assistant. Answer only questions about "
+            + "JeevanMart products, listings, categories, sellers, cart, checkout, orders, "
+            + "delivery, returns, reviews, and account use. If asked about unrelated topics, "
+            + "politely say you can only help with JeevanMart marketplace questions. "
+            + "Do not claim access to private order/account data. Keep answers concise.";
+    private final ChatProvider provider;
+    private final ChatProvider fallbackProvider;
 
     public ChatServiceImpl() {
-        this(new ProductServiceImpl(new ProductDAOImpl()));
+        this(createConfiguredProvider());
     }
 
-    public ChatServiceImpl(ProductService productService) {
-        this.productService = productService;
+    public ChatServiceImpl(ChatProvider provider) {
+        this.provider = provider;
+        this.fallbackProvider = new MockChatProvider();
+    }
+
+    private static ChatProvider createConfiguredProvider() {
+        String selected = System.getenv("AI_CHATBOT_PROVIDER");
+        if (selected == null || selected.trim().isEmpty()) {
+            Properties properties = new Properties();
+            try (InputStream input = ChatServiceImpl.class.getClassLoader()
+                    .getResourceAsStream("config.properties")) {
+                if (input != null) properties.load(input);
+            } catch (Exception exception) {
+                LoggerFactory.getLogger(ChatServiceImpl.class)
+                        .warn("Could not load chatbot configuration; using mock provider");
+            }
+            selected = properties.getProperty("ai.chatbot.provider", "mock");
+        }
+        return "gemini".equalsIgnoreCase(selected.trim())
+                ? new GeminiChatProvider() : new MockChatProvider();
     }
 
     @Override
-    public String processMessage(String userMessage, Long userId) throws AppException {
+    public String processMessage(String userMessage, Long userId) {
         if (userMessage == null || userMessage.trim().isEmpty()) {
-            throw new ValidationException("message", "Chat message cannot be blank");
+            return "Please enter a question about JeevanMart.";
+        }
+        String message = userMessage.trim();
+        try {
+            String reply = provider.getReply(message, DOMAIN_CONTEXT);
+            if (reply != null && !reply.trim().isEmpty()) return reply.trim();
+        } catch (Exception exception) {
+            LOGGER.warn("Chat provider unavailable; returning marketplace FAQ fallback: {}",
+                    exception.getClass().getSimpleName());
         }
 
-        String query = userMessage.trim().toLowerCase();
-        logger.info("Processing chat query from user {}: {}", userId != null ? userId : "guest", query);
-
-        if (query.contains("return") || query.contains("refund")) {
-            return "JeevanMart offers a hassle-free 7-day return policy on all eligible items. Visit your Orders page to initiate a return.";
-        } else if (query.contains("shipping") || query.contains("delivery")) {
-            return "Standard delivery takes 2-4 business days. Track your active orders in real time under the Orders tab.";
-        } else if (query.contains("order") || query.contains("status")) {
-            return "You can check order history, live status, and tracking updates directly in your Buyer Dashboard under Orders.";
-        } else if (query.contains("product") || query.contains("search") || query.contains("buy")) {
-            return "You can browse our catalog by category, search by keywords, and filter by price range on the Products page.";
-        } else if (query.contains("contact") || query.contains("support")) {
-            return "Our support team is available 24/7 at support@jeevanmart.com.";
-        }
-
-        return "Hello! I am your JeevanMart AI Assistant. How can I help you today with products, orders, shipping, or returns?";
+try {
+    return fallbackProvider.getReply(message, DOMAIN_CONTEXT);
+} catch (Exception exception) {
+    LOGGER.error("Chatbot fallback provider also failed: {}",
+            exception.getClass().getSimpleName());
+    return "Sorry, the JeevanMart chatbot is temporarily unavailable. Please try again.";
+}
     }
 }

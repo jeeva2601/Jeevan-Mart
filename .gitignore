@@ -1,6 +1,16 @@
+# Local secrets and machine-specific configuration
+.env
+.env.*
+!.env.example
+src/main/resources/config.properties
+
+# Maven output
 target/
-tomcat.8888/
-*.class
+*.war
+
+# IDE / OS files
 .idea/
-*.iml
 .vscode/
+*.iml
+.DS_Store
+Thumbs.db

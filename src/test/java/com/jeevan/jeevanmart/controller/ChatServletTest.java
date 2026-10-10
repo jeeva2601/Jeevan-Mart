@@ -54,7 +54,6 @@ class ChatServletTest {
     void testChatValidMessage() throws Exception {
         when(request.getSession(false)).thenReturn(session);
         when(request.getSession(true)).thenReturn(session);
-        when(request.getSession()).thenReturn(session);
         UserResponseDTO user = new UserResponseDTO();
         user.setId(10L);
         when(session.getAttribute("currentUser")).thenReturn(user);

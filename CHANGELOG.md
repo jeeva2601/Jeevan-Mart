@@ -46,3 +46,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Layered MVC package structure (controller, service, dao, model, dto, filter, listener, util, exception).
 - Database DDL schema (`db/schema.sql`) and seed data (`db/seed.sql`).
 - Error views without stack trace leakage.
+\n## Unreleased\n- Add floating JeevanMart chatbot widget, versioned chat endpoint, per-session rate limiting/cache, configurable mock/Gemini provider, and fallback behavior.\n- Fix the missing `initProductGallery` initializer that aborted the main JavaScript startup sequence.\n

@@ -125,80 +125,61 @@ public class DatabaseMigrationRunner {
         return filename;
     }
 
-   private String loadMigrationSql(String filename) {
-    Path path = Paths.get("db", "migrations", filename);
+    private String loadMigrationSql(String filename) {
+        // Try file system first
+        Path path = Paths.get("db", "migrations", filename);
+        if (Files.exists(path)) {
+            try {
+                return Files.readString(path, StandardCharsets.UTF_8);
+            } catch (Exception e) {
+                logger.warn("Could not read migration from path: {}", path, e);
+            }
+        }
 
-    if (Files.exists(path)) {
-        try {
-            return Files.readString(path, StandardCharsets.UTF_8);
+        // Try classpath db/migrations/
+        String resourcePath = "db/migrations/" + filename;
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream(resourcePath)) {
+            if (in != null) {
+                return new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))
+                        .lines().collect(Collectors.joining("\n"));
+            }
         } catch (Exception e) {
-            throw new IllegalStateException(
-                    "Could not read migration file: " + path, e);
-        }
-    }
-
-    String resourcePath = "db/migrations/" + filename;
-
-    try (InputStream in = getClass().getClassLoader()
-            .getResourceAsStream(resourcePath)) {
-        if (in != null) {
-            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
-        }
-    } catch (Exception e) {
-        throw new IllegalStateException(
-                "Could not read migration resource: " + resourcePath, e);
-    }
-
-    throw new IllegalStateException(
-            "Migration script not found: " + filename);
-}
-
-private void applyMigration(Connection conn, String migrationName, String sql)
-        throws SQLException {
-
-    boolean autoCommit = conn.getAutoCommit();
-    conn.setAutoCommit(false);
-
-    try {
-        // Remove SQL comment lines before executing statements
-        StringBuilder cleanSql = new StringBuilder();
-
-        for (String line : sql.split("\\R")) {
-            if (!line.trim().startsWith("--")) {
-                cleanSql.append(line).append("\n");
-            }
+            logger.warn("Could not read migration from classpath resource: {}", resourcePath, e);
         }
 
-        // Execute each SQL statement
-        try (Statement stmt = conn.createStatement()) {
-            for (String command : cleanSql.toString().split(";")) {
-                String trimmed = command.trim();
-
-                if (!trimmed.isEmpty()) {
-                    stmt.execute(trimmed);
+        // Fallback to classpath schema.sql for V1
+        if (filename.startsWith("V1")) {
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream("schema.sql")) {
+                if (in != null) {
+                    return new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))
+                            .lines().collect(Collectors.joining("\n"));
                 }
+            } catch (Exception e) {
+                logger.error("Could not load schema.sql fallback", e);
             }
         }
 
-        // Record the successful migration
-        String recordSql =
-                "INSERT INTO schema_migrations (version, applied_at) "
-                + "VALUES (?, CURRENT_TIMESTAMP)";
-
-        try (PreparedStatement ps = conn.prepareStatement(recordSql)) {
-            ps.setString(1, migrationName);
-            ps.executeUpdate();
-        }
-
-        conn.commit();
-
-    } catch (Exception e) {
-        conn.rollback();
-        throw new SQLException(
-                "Failed to execute migration " + migrationName, e);
-
-    } finally {
-        conn.setAutoCommit(autoCommit);
+        throw new IllegalStateException("Migration script not found: " + filename);
     }
-}
+
+    private void applyMigration(Connection conn, String migrationName, String sql) throws SQLException {
+        boolean autoCommit = conn.getAutoCommit();
+        conn.setAutoCommit(false);
+        try {
+            org.h2.tools.RunScript.execute(conn, new java.io.StringReader(sql));
+
+            String recordSql = "INSERT INTO schema_migrations (version, applied_at) VALUES (?, CURRENT_TIMESTAMP)";
+            try (PreparedStatement ps = conn.prepareStatement(recordSql)) {
+                ps.setString(1, migrationName);
+                ps.executeUpdate();
+            }
+
+            conn.commit();
+        } catch (Exception e) {
+            conn.rollback();
+            throw new SQLException("Failed to execute migration " + migrationName, e);
+        } finally {
+            conn.setAutoCommit(autoCommit);
+        }
+    }
 }

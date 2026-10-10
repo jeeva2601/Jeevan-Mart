@@ -373,5 +373,54 @@ Automated tests automatically launch embedded Apache Tomcat 9 at `http://localho
    - Windows: `%CATALINA_HOME%\bin\startup.bat`
 3. Access the web application in any browser at:  
    `http://localhost:8080/jeevanmart/`
-#   P r a k a s h M a r t  
+#   P r a k a s h M a r t 
  
+ 
+
+## Chatbot configuration
+
+The floating marketplace assistant uses `POST /api/v1/chat`. It defaults to the offline `mock` provider, so the widget can be demonstrated without an API key. The server applies a 500-character message limit, a per-session limit of 10 messages per minute, and a per-session cache for repeated questions. Provider failures return a marketplace FAQ fallback instead of an error page.
+
+To enable Gemini, configure the server environment (never put the key in JavaScript or commit it to Git):
+
+- `AI_CHATBOT_PROVIDER=gemini`
+- `GEMINI_API_KEY=<your Gemini API key>`
+
+For offline development, use `AI_CHATBOT_PROVIDER=mock` or keep `ai.chatbot.provider=mock` in your local `src/main/resources/config.properties`. The actual `config.properties` file is ignored by Git. Restart Tomcat after changing environment variables. Gemini requests have a connect/read timeout; if the API key is missing or the provider fails, the FAQ fallback is used.
+
+### Chatbot smoke test
+
+1. Start the app and open `/jeevanmart/home`.
+2. Confirm the floating **Chat with us** button appears at the bottom-right.
+3. Open it and ask: `How do I find products?`
+4. Confirm a reply appears without reloading the page.
+5. Send 11 messages within one minute in the same browser session; the endpoint should return HTTP 429 after the allowed 10 messages.
+6. Stop/reconfigure the provider or use mock mode to confirm fallback behavior. Do not publish your API key in screenshots or browser code.
+
+
+## 8. Deploy to Render (Docker)
+
+This repository includes a Dockerfile for Render. The image builds the WAR with Java 17 and runs it on Tomcat 9, deploying the app at the domain root (`/`). Render's `PORT` environment variable is applied to Tomcat automatically.
+
+1. Push the project folder to a GitHub repository.
+2. In Render, choose **New + → Web Service**, connect the repository, and select **Docker** as the runtime.
+3. Set the **Root Directory** to `JeevanMart` only if the repository contains this project inside a `JeevanMart/` subfolder. If `pom.xml` and `Dockerfile` are at the repository root, leave Root Directory blank.
+4. Deploy. The health endpoint is `/api/v1/health`.
+
+### Render environment variables
+
+Set these under **Environment** in Render:
+- `AI_CHATBOT_PROVIDER=mock`
+- `JDBC_USER=sa`
+- `JDBC_PASSWORD=` (leave blank for the default H2 database unless you choose a password)
+- `JDBC_URL=jdbc:h2:file:/var/data/jeevanmart;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL` **only if** you attach a persistent disk mounted at `/var/data`.
+
+Without a persistent disk, the Dockerfile uses `/tmp/jeevanmart` so the app can start, but local H2 data may be lost when the service restarts or redeploys. For durable production data, attach a Render persistent disk and use the `/var/data` JDBC URL above. Render persistent disks may require a paid plan. Do not set `JDBC_URL` to the local development in-memory URL for a production deployment if data must survive restarts.
+
+Optional Gemini chatbot configuration:
+- `AI_CHATBOT_PROVIDER=gemini`
+- `GEMINI_API_KEY=<your secret key>` (set as a Render secret; never commit it)
+
+### Important
+
+The uploaded `pom.xml` is already valid XML and contains no MySQL dependency at the reported line 112. The error log appears to come from a different/older version of the file or a previous deployment commit. Commit and deploy this exact project version so Render builds the matching Dockerfile and `pom.xml`. This app currently uses H2, not MySQL.

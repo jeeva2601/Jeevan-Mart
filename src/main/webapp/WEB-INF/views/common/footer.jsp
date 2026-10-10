@@ -78,6 +78,32 @@
 <div id="confirm-modal" class="modal-backdrop" role="dialog" aria-modal="true"></div>
 <div id="global-loader"></div>
 
+<!-- JeevanMart marketplace assistant (API key remains server-side) -->
+<div id="jm-chatbot" class="jm-chatbot" data-context-path="${pageContext.request.contextPath}">
+    <section class="jm-chat-panel" id="jm-chat-panel" role="dialog" aria-label="JeevanMart assistant" aria-modal="false" hidden>
+        <header class="jm-chat-header">
+            <div>
+                <strong>JeevanMart Assistant</strong>
+                <span>Product and marketplace help</span>
+            </div>
+            <button type="button" class="jm-chat-close" id="jm-chat-close" aria-label="Close chat">&times;</button>
+        </header>
+        <div class="jm-chat-messages" id="jm-chat-messages" aria-live="polite">
+            <div class="jm-chat-bubble jm-chat-bot">Hello! Ask me about products, listings, your cart, checkout, orders, delivery, or reviews.</div>
+        </div>
+        <form class="jm-chat-form" id="jm-chat-form">
+            <label class="jm-chat-sr-only" for="jm-chat-input">Your question</label>
+            <textarea id="jm-chat-input" name="message" rows="2" maxlength="500" placeholder="Ask about JeevanMart..." required></textarea>
+            <button type="submit" id="jm-chat-send">Send</button>
+        </form>
+        <p class="jm-chat-note">Please do not share passwords or payment details.</p>
+    </section>
+    <button type="button" id="jm-chat-launcher" class="jm-chat-launcher" aria-controls="jm-chat-panel" aria-expanded="false">
+        <span aria-hidden="true">&#128172;</span> Chat with us
+    </button>
+</div>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/chatbot.css">
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+<script src="${pageContext.request.contextPath}/assets/js/chatbot.js" defer></script>
 </body>
 </html>
